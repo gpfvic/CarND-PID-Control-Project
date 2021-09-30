@@ -1,5 +1,8 @@
 #ifndef PID_H
 #define PID_H
+#include <vector>
+
+using namespace std;
 
 class PID {
  public:
@@ -31,20 +34,37 @@ class PID {
    */
   double TotalError();
 
- private:
+  /**
+   * tuning the pid parameters
+   */
+  void twiddle_tune(double cte);
+
+  void twiddle_eval(double cte);
+
+  void twiddle_first();
+
+  void twiddle_init();
+
   /**
    * PID Errors
    */
-  double p_error;
-  double i_error;
-  double d_error;
+  vector<double> errors; // [p_error, d_error, i_error]
 
   /**
    * PID Coefficients
    */ 
-  double Kp;
-  double Ki;
-  double Kd;
+  vector<double> p; //[ Kp, Kd, Ki]
+
+  /**
+   * PID parameters tuning: twiddle 
+   */
+  int step;
+  int iteration;
+  vector<double> dp;
+  double total_error;
+  double best_error;
+  int param_index;
+  
 };
 
 #endif  // PID_H
