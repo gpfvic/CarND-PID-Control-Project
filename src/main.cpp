@@ -38,11 +38,16 @@ int main() {
   /**
    * TODO: Initialize the pid variable.
    */
-  pid_s.Init(0.1, 0.0001, 3.0);
-  pid_t.Init(0.3, 0, 0.02);
 
-  pid_s.twiddle_init();
-  pid_t.twiddle_init();
+  // PID training 
+  // pid_s.Init(0.1, 0.0001, 3.0);
+  // pid_t.Init(0.3, 0, 0.02);
+  // pid_s.twiddle_init();
+  // pid_t.twiddle_init();
+
+  // fine-tuned parameters
+  pid_s.Init(0.121, 0.0001, 3);
+  pid_t.Init(0.363, 0, 0.02);
   
   
   h.onMessage([&pid_s, &pid_t](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
@@ -74,27 +79,28 @@ int main() {
           pid_s.UpdateError(cte);
           pid_t.UpdateError(fabs(cte));
           
-          int training_steps = 20;
-          pid_s.total_error += pow(cte,2);
-          if(pid_s.iteration%training_steps ==0){
-            cout<<"\n\nDEBUG-----------------------------------"<<endl;
-            cout<<"Steer Iteration: "<<pid_s.iteration<<"\tError Best vs Curr = ["<<pid_s.best_error<<", "<<pid_s.total_error<<"]"<<endl;
-            pid_s.twiddle_first();
-            pid_s.twiddle_tune(cte);
-            pid_s.twiddle_eval(cte);
-            cout<<"Steer P = ["<<pid_s.p[0]<<", "<<pid_s.p[1]<<", "<<pid_s.p[2]<<"]\t\tDP = ["<<pid_s.dp[0]<<", "<<pid_s.dp[1]<<", "<<pid_s.dp[2]<<"]"<<endl;
-          }
-          pid_s.iteration += 1;
+          // PID Model training 
+          // int training_steps = 1000;
+          // pid_s.total_error += pow(cte,2);
+          // if(pid_s.iteration%training_steps ==0){
+          //   cout<<"\n\nDEBUG-----------------------------------"<<endl;
+          //   cout<<"Steer Iteration: "<<pid_s.iteration<<"\tError Best vs Curr = ["<<pid_s.best_error<<", "<<pid_s.total_error<<"]"<<endl;
+          //   pid_s.twiddle_first();
+          //   pid_s.twiddle_tune(cte);
+          //   pid_s.twiddle_eval(cte);
+          //   cout<<"Steer PID = ["<<pid_s.p[0]<<", "<<pid_s.p[2]<<", "<<pid_s.p[1]<<"]\t\tDP = ["<<pid_s.dp[0]<<", "<<pid_s.dp[2]<<", "<<pid_s.dp[1]<<"]"<<endl;
+          // }
+          // pid_s.iteration += 1;
 
-          pid_t.total_error += pow(cte,2);
-          if(pid_t.iteration%training_steps==0){
-            cout<<"Throt Iteration: "<<pid_t.iteration<<"\tError Best vs Curr = ["<<pid_t.best_error<<", "<<pid_t.total_error<<"]"<<endl;
-            pid_t.twiddle_first();
-            pid_t.twiddle_tune(cte);
-            pid_t.twiddle_eval(cte);
-            cout<<"Throt P = ["<<pid_t.p[0]<<", "<<pid_t.p[1]<<", "<<pid_t.p[2]<<"]\t\tDP = ["<<pid_t.dp[0]<<", "<<pid_t.dp[1]<<", "<<pid_t.dp[2]<<"]"<<endl;
-          }
-          pid_t.iteration += 1;
+          // pid_t.total_error += pow(cte,2);
+          // if(pid_t.iteration%training_steps==0){
+          //   cout<<"Throt Iteration: "<<pid_t.iteration<<"\tError Best vs Curr = ["<<pid_t.best_error<<", "<<pid_t.total_error<<"]"<<endl;
+          //   pid_t.twiddle_first();
+          //   pid_t.twiddle_tune(cte);
+          //   pid_t.twiddle_eval(cte);
+          //   cout<<"Throt PID = ["<<pid_t.p[0]<<", "<<pid_t.p[2]<<", "<<pid_t.p[1]<<"]\t\tDP = ["<<pid_t.dp[0]<<", "<<pid_t.dp[2]<<", "<<pid_t.dp[1]<<"]"<<endl;
+          // }
+          // pid_t.iteration += 1;
 
 
           steer_value = pid_s.TotalError();

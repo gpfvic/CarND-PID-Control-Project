@@ -39,8 +39,8 @@ As the project combines with server and the simulator interactions lacking of th
 Then I use the Twiddle method to autotune the PID controllers. As the car's speed get faster, it will cause oscillation and drifting out from the lane quickly. So I set the iterations as 20 for the tunning parameters tuning take effects to smooth the error trajectory. Less iterations, less time, less accumulated errors, and the car can counteract the error as soon as possible.
 
 The final tunning parameters is as follows:
-* PID for Steering: [0.256932, 0.000222892,  6.85427]
-* PID for throttle: [0.770795, 0.0456951,     0]
+* PID for Steering: [0.121, 0.0001, 3   ]
+* PID for throttle: [0.363, 0,      0.02]
 
 
 ![alt image](./imgs/fast_speed.png "The fast speed after PID throttle tuning")
