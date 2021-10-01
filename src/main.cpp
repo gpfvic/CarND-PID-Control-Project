@@ -46,8 +46,8 @@ int main() {
   // pid_t.twiddle_init();
 
   // fine-tuned parameters
-  pid_s.Init(0.121, 0.0001, 3);
-  pid_t.Init(0.363, 0, 0.02);
+  pid_s.Init(0.134, 0.00027, 3);
+  pid_t.Init(0.317, 0, 0.0226);
   
   
   h.onMessage([&pid_s, &pid_t](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
@@ -80,7 +80,7 @@ int main() {
           pid_t.UpdateError(fabs(cte));
           
           // PID Model training 
-          // int training_steps = 1000;
+          // int training_steps = 2000;
           // pid_s.total_error += pow(cte,2);
           // if(pid_s.iteration%training_steps ==0){
           //   cout<<"\n\nDEBUG-----------------------------------"<<endl;
@@ -104,7 +104,7 @@ int main() {
 
 
           steer_value = pid_s.TotalError();
-          throttle_value = 0.8 + pid_t.TotalError();
+          throttle_value = 0.75 + pid_t.TotalError();
           
 
 
