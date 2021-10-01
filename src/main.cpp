@@ -42,6 +42,8 @@ int main() {
   // PID training 
   // pid_s.Init(0.1, 0.0001, 3.0);
   // pid_t.Init(0.3, 0, 0.02);
+  // pid_s.Init(0.13784, 0.000129286, 4.2537);
+  // pid_t.Init(0.41352, 0, 0.028358);
   // pid_s.twiddle_init();
   // pid_t.twiddle_init();
 
@@ -104,13 +106,13 @@ int main() {
 
 
           steer_value = pid_s.TotalError();
-          throttle_value = 0.75 + pid_t.TotalError();
+          // throttle_value = 0.75 + pid_t.TotalError();
           
 
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
-          msgJson["throttle"] = throttle_value;
+          msgJson["throttle"] = 0.3;//throttle_value;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
           // std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);

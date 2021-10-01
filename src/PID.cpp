@@ -21,7 +21,6 @@ void PID::Init(double Kp_, double Ki_, double Kd_)
 
 void PID::UpdateError(double cte)
 {
-
   errors[1] = cte - errors[0]; // d error
   errors[0] = cte; // p_error
   errors[2] += cte; // i error
